@@ -37,6 +37,14 @@
 
 ---
 
+## 📥 Download & Test
+
+You can download the ready-to-use APK and test the app directly on your Android device:
+* **[📥 Download QR AI v1.0 (APK)](https://www.mediafire.com/file/h43h936fol8gahh/QR_AI.apk/file)**
+
+---
+---
+
 ## 📱 Screenshots
 
 <p align="center">
