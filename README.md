@@ -30,7 +30,7 @@
 
 * **Framework:** [Flutter](https://flutter.dev/) (Dart)
 * **Database:** [Hive](https://pub.dev/packages/hive) & [Hive Flutter](https://pub.dev/packages/hive_flutter)
-* **AI Integration:** [Google Generative AI (Gemini)](https://pub.dev/packages/google_generative_ai)
+* **AI Integration:** [Google Generative AI 
 * **Scanning & Generating:** [mobile_scanner](https://pub.dev/packages/mobile_scanner) & [qr_flutter](https://pub.dev/packages/qr_flutter)
 * **Preferences:** [SharedPreferences](https://pub.dev/packages/shared_preferences)
 * **Localization:** `flutter_localizations` with JSON translation assets
