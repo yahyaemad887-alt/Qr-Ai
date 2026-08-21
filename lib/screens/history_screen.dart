@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
 import '../services/history_service.dart';
 import '../models/qr_item.dart';
+import '../core/app_localizations.dart';
 
 class HistoryScreen extends StatefulWidget {
-  const HistoryScreen({Key? key}) : super(key: key);
+  const HistoryScreen({super.key});
 
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  Future<void> _clearAll() async {
+  Future<void> _clearAll(AppLocalizations loc) async {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('حذف السجل'),
-        content: const Text('هل أنت متأكد من مسح جميع العناصر؟'),
+        title: Text(loc.translate('clear_history_dialog_title')),
+        content: Text(loc.translate('clear_history_dialog_msg')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('إلغاء'),
+            child: Text(loc.translate('cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('مسح الكل', style: TextStyle(color: Colors.red)),
+            child: Text(
+              loc.translate('clear_all'),
+              style: const TextStyle(color: Colors.red),
+            ),
           ),
         ],
       ),
@@ -31,25 +35,52 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     if (confirm == true) {
       await HistoryService.clearHistory();
-      setState(() {}); // لتحديث الشاشة بعد مسح السجل
+      setState(() {});
     }
+  }
+
+  String _getTranslatedType(String type, AppLocalizations loc) {
+    if (type.toLowerCase() == 'scanned') {
+      return loc.translate('type_scanned');
+    } else if (type.toLowerCase() == 'generated') {
+      return loc.translate('type_generated');
+    }
+    return type;
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final currentTextDir = Directionality.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('سجل العمليات'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete_sweep),
-            tooltip: 'مسح الكل',
-            onPressed: _clearAll,
+        automaticallyImplyLeading: false,
+        title: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Row(
+            children: [
+              // زر مسح السجل مثبت على اليسار لمنع التداخل مع الإعدادات
+              IconButton(
+                icon: const Icon(Icons.delete_sweep),
+                tooltip: loc.translate('clear_all'),
+                onPressed: () => _clearAll(loc),
+              ),
+              Expanded(
+                child: Directionality(
+                  textDirection: currentTextDir,
+                  child: Text(
+                    loc.translate('history_title'),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 48), // مساحة تعويضية لتوازن العنوان مع زر الإعدادات
+            ],
           ),
-        ],
+        ),
       ),
-      // تم استبدال المتغير القديم واستدعاء getHistory مباشرة ليتم جلب وتحديث البيانات مع كل فتح للتاب
       body: FutureBuilder<List<QRItem>>(
         future: HistoryService.getHistory(),
         builder: (context, snapshot) {
@@ -60,7 +91,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           if (snapshot.hasError) {
             return Center(
               child: Text(
-                'حدث خطأ: ${snapshot.error}',
+                '${loc.translate('error_occurred')}${snapshot.error}',
                 style: const TextStyle(color: Colors.red),
               ),
             );
@@ -72,12 +103,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Icon(Icons.history, size: 80, color: Colors.grey),
-                  SizedBox(height: 16),
+                children: [
+                  const Icon(Icons.history, size: 80, color: Colors.grey),
+                  const SizedBox(height: 16),
                   Text(
-                    'لا يوجد عناصر في السجل حالياً',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    loc.translate('no_history_found'),
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ],
               ),
@@ -93,7 +124,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 elevation: 2,
                 margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
                 child: ListTile(
-                  leading: const Icon(Icons.qr_code, color: Colors.deepPurple),
+                  leading: Icon(
+                    Icons.qr_code,
+                    color: Theme.of(context).primaryColor,
+                  ),
                   title: Text(
                     item.data,
                     maxLines: 1,
@@ -101,14 +135,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(
-                    item.type,
+                    _getTranslatedType(item.type, loc),
                     style: const TextStyle(color: Colors.grey),
                   ),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.redAccent),
                     onPressed: () async {
                       await HistoryService.removeItemAt(index);
-                      setState(() {}); // لتحديث القائمة فور حذف العنصر
+                      setState(() {});
                     },
                   ),
                 ),

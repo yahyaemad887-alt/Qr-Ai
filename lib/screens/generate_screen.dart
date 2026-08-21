@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'qr_image_screen.dart'; // سنقوم بإنشاء هذه الصفحة لعرض الـ QR بعد توليده
+import 'qr_image_screen.dart';
+import '../core/app_localizations.dart'; // مسار كلاس الترجمة المتوقع لديك
 
 class GenerateScreen extends StatefulWidget {
-  const GenerateScreen({Key? key}) : super(key: key);
+  const GenerateScreen({super.key});
 
   @override
   State<GenerateScreen> createState() => _GenerateScreenState();
@@ -21,15 +22,14 @@ class _GenerateScreenState extends State<GenerateScreen> {
     final text = _textController.text.trim();
     if (text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('برجاء إدخال نص أو رابط أولاً'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.translate('enter_text_warning')),
           backgroundColor: Colors.red,
         ),
       );
       return;
     }
 
-    // الانتقال لشاشة عرض وتوليد الـ QR Code مع تمرير النص
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -40,9 +40,11 @@ class _GenerateScreenState extends State<GenerateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('توليد QR Code'),
+        title: Text(loc.translate('generate_qr_title')),
         centerTitle: true,
       ),
       body: Padding(
@@ -50,26 +52,37 @@ class _GenerateScreenState extends State<GenerateScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.qr_code_2, size: 100, color: Colors.deepPurple),
+            Icon(
+              Icons.qr_code_2,
+              size: 100,
+              color: Theme.of(context).primaryColor,
+            ),
             const SizedBox(height: 24),
-            const Text(
-              'أدخل الرابط أو النص الذي تريد تحويله إلى QR Code',
+            Text(
+              loc.translate('generate_qr_subtitle'),
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
             ),
             const SizedBox(height: 32),
             TextField(
               controller: _textController,
               decoration: InputDecoration(
-                labelText: 'اكتب الرابط أو النص هنا',
-                hintText: 'https://example.com',
+                labelText: loc.translate('enter_text_label'),
+                hintText: loc.translate('url_hint'),
                 prefixIcon: const Icon(Icons.link),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.deepPurple, width: 2),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).primaryColor,
+                    width: 2,
+                  ),
                 ),
               ),
             ),
@@ -80,12 +93,12 @@ class _GenerateScreenState extends State<GenerateScreen> {
               child: ElevatedButton.icon(
                 onPressed: _generateQR,
                 icon: const Icon(Icons.qr_code),
-                label: const Text(
-                  'إنشاء الـ QR Code',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                label: Text(
+                  loc.translate('generate_button'),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
+                  backgroundColor: Theme.of(context).primaryColor,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),

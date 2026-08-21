@@ -1,7 +1,19 @@
-class QRItem {
+import 'package:hive/hive.dart';
+
+part 'qr_item.g.dart';
+
+@HiveType(typeId: 0)
+class QRItem extends HiveObject {
+  @HiveField(0)
   final String id;
+
+  @HiveField(1)
   final String data;
+
+  @HiveField(2)
   final String type;
+
+  @HiveField(3)
   final DateTime timestamp;
 
   QRItem({

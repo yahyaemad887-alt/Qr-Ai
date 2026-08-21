@@ -1,4 +1,4 @@
-name: QrAi
+name: qr_ai
 description: "A new Flutter project for QR scanning and AI processing."
 publish_to: 'none'
 
@@ -10,6 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   # 1. مكتبة الكاميرا ومسح الـ QR (مستقرة وسريعة جداً)
   mobile_scanner: ^5.1.1
@@ -20,7 +22,7 @@ dependencies:
   # 3. مكتبة الذكاء الاصطناعي (Google Generative AI / Gemini)
   google_generative_ai: ^0.4.0
 
-  # 4. مكتبة الهيستوري والتخزين المحلي (Hive - أسرع وأخف مكتبة للتخزين)
+  # 4. مكتبة الهيستوري والتخزين المحلي
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
@@ -41,7 +43,7 @@ dev_dependencies:
   hive_generator: ^2.0.1
   build_runner: ^2.4.9
 
-  # حزمة توليد الأيقونات اللي ضفناها في الآخر
+  # حزمة توليد الأيقونات
   flutter_launcher_icons: ^0.13.1
 
 flutter_launcher_icons:
@@ -51,3 +53,6 @@ flutter_launcher_icons:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/tr/

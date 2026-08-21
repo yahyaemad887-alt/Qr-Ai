@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../services/history_service.dart';
 import '../models/qr_item.dart';
+import '../core/app_localizations.dart';
 
 class QrImageScreen extends StatefulWidget {
   final String data;
@@ -26,14 +27,16 @@ class _QrImageScreenState extends State<QrImageScreen> {
       type: 'Generated',
       timestamp: DateTime.now(),
     );
-    await HistoryService.saveHistory(newItem); // تم تعديل اسم الدالة لتتوافق مع مشروعك
+    await HistoryService.saveHistory(newItem);
   }
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('كود الـ QR المولّد'),
+        title: Text(loc.translate('generated_qr_title')),
         centerTitle: true,
       ),
       body: Center(
@@ -45,11 +48,11 @@ class _QrImageScreenState extends State<QrImageScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.white, // خلفية بيضاء ثابتة لضمان وضوح فحص الـ QR
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withValues(alpha: 0.3),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 10,
                       spreadRadius: 2,
                     ),
@@ -59,20 +62,24 @@ class _QrImageScreenState extends State<QrImageScreen> {
                   data: widget.data,
                   version: QrVersions.auto,
                   size: 220.0,
+                  backgroundColor: Colors.white,
                 ),
               ),
               const SizedBox(height: 32),
-              Text(
+              SelectableText(
                 widget.data,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 maxLines: 2,
-                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 24),
-              const Text(
-                'تم حفظ هذا الكود في السجل بنجاح!',
-                style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+              Text(
+                loc.translate('saved_to_history_success'),
+                style: const TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
             ],
           ),

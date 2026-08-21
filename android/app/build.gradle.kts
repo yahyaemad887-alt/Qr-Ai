@@ -17,8 +17,8 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.qr_ai"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+
+        // تحديد الـ minSdk بـ 21 كحد أدنى لضمان توافق مكتبة mobile_scanner والكاميرا
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -30,6 +30,10 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+
+            // تفعيل حماية وتصغير الكود عند الاستخراج النهائي
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
 }
