@@ -12,7 +12,7 @@
 
 * 🔍 **Instant QR Scanning:** Real-time QR code scanning via camera or from gallery images.
 * ✍️ **Custom QR Generator:** Easily create QR codes for links, plain text, and contact information.
-* 🤖 **AI-Powered Insights:** Integrated with **Google Gemini AI** to summarize, analyze, and process scanned content automatically.
+* 🤖 **AI-Powered Insights:** Integrated  with **Google Gemini AI** to summarize, analyze, and process scanned content automatically.
 * 📜 **Offline Local Storage:** Fast, lightweight history management using **Hive** database (works completely offline).
 * 🌍 **Full 7-Language Support:** Comprehensive localization with full support for both RTL and LTR layouts:
    * English
